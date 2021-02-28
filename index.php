@@ -42,21 +42,37 @@
         include('./view/error.php');
       }else {
         add_item($category_id, $title, $description);
-        header("Location: .");
+        header("Location: index.php");
       }
       break;
-    default:
-      $to_do_list_items = get_all_items();
+    case('filter_tasks'):
+      $category_id = filter_input(INPUT_POST, 'filter_select', FILTER_VALIDATE_INT);
+      if($category_id == NULL || $category_id == FALSE) {
+        // $to_do_list_items = get_all_items();
+        $error = $category_id;
+        include('./view/error.php');
+      }else {
+        $to_do_list_items = get_items_by_category($category_id); 
+      }
       $categories = get_all_categories();
+      header("Location: .?category_id=$category_id");
+      break;
+    default:
+      $category_id = filter_input(INPUT_GET, 'category_id', FILTER_VALIDATE_INT);
+      if($category_id == NULL || $category_id == FALSE) {
+        $to_do_list_items = get_all_items();
+      }else {
+        $to_do_list_items = get_items_by_category($category_id);
+      }
+      $categories = get_all_categories();
+      if($categories == NULL || $categories == FALSE) {
+        $host  = $_SERVER['HTTP_HOST'];
+        $uri   = rtrim(dirname($_SERVER['PHP_SELF']), '/\\');
+        $extra = './view/category_list.php';
+        header("Location: http://$host$uri/$extra");
+      }
       // include('index.php');
       break;
-  }
-
-  if($categories == NULL || $categories == FALSE) {
-    $host  = $_SERVER['HTTP_HOST'];
-    $uri   = rtrim(dirname($_SERVER['PHP_SELF']), '/\\');
-    $extra = './view/category_list.php';
-    header("Location: http://$host$uri/$extra");
   }
 ?>
 

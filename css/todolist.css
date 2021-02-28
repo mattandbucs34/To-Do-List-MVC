@@ -61,7 +61,7 @@ input {
 }
 
 .task-list-section {
-  max-height: 64vh;
+  max-height: 24rem;
   overflow-y: auto;
   overflow-x: hidden;
 }

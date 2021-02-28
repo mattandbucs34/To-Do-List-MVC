@@ -11,7 +11,7 @@
 
   function get_items_by_category($category_id) {
     global $db;
-    $query = 'SELECT * FROM todoitems WHERE todoitems.categoryID = :categoryID ORDER BY categoryID INNER JOIN categories ON categories.categoryID = todoitems.categoryID';
+    $query = 'SELECT * FROM todoitems INNER JOIN categories ON categories.categoryID = todoitems.categoryID WHERE todoitems.categoryID = :categoryID';
     $statement = $db->prepare($query);
     $statement->bindValue(':categoryID', $category_id);
     $statement->execute();

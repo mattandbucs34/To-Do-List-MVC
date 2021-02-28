@@ -1,4 +1,7 @@
 <main>
+  <section>
+    <?php include('task_list_filter.php'); ?>
+  </section>
   <section class="task-list-section">
     <table class="task-table">
       <thead>
