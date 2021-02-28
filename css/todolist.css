@@ -4,12 +4,38 @@
 
 body {
   font-family: Arial, Helvetica, sans-serif;
-  height: 100vh;
+  margin: unset;
+}
+
+main {
+  position: relative;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+th {
+  position: sticky;
+  top: 0;
+  background-color: var(--custom-navy);
+  color: white;
+  height: 1.75rem;
+}
+
+select {
+  height: 2rem;
+  margin: 0.5rem 0;
+}
+
+footer {
+  display: flex;
+  justify-content: center;
 }
 
 .list-header {
   height: 4.5rem;
-  margin-top: 3.5rem;
   background-color: var(--custom-navy);
   display: flex;
   align-items: center;
@@ -25,11 +51,13 @@ input {
 }
 
 .container {
+  display: grid;
+  grid-template-rows: 4.5rem auto 4rem;
+  height: 90vh;
   width: 65rem;
-  margin: 0 auto;
+  margin: 2.5rem auto 0 auto;
   box-shadow: 0 3px 4px rgba(0 0 0 / 50%);
   border-radius: 0.5rem;
-  height: calc(100% - 4rem);
 }
 
 .task-list-section {
@@ -38,11 +66,30 @@ input {
   overflow-x: hidden;
 }
 
-.to-do-row {
+.task-table {
+  margin-top: 2rem;
+}
+
+.task-table thead {
+  background-color: var(--custom-navy);
+  color: white;
+}
+
+.task-table thead tr,
+.task-row {
   display: grid;
-  grid-template-columns: auto 5rem;
+  grid-template-columns: auto 15rem 5rem;
   border-bottom: 1px solid black;
   padding: 0 0.5rem;
+}
+
+.task-table thead tr {
+  height: 2.5rem;
+}
+
+.task-table thead tr,
+.task-row {
+  align-items: center;
 }
 
 .task-title {
@@ -76,7 +123,7 @@ input {
 .submit-btn {
   background-color: #283d55;
   color: white;
-  width: 6rem;
+  padding: 0.5rem;
   height: 2rem;
 }
 
@@ -90,6 +137,7 @@ input {
   transform: translateY(2px);
 }
 
+select:focus,
 .remove-btn:focus,
 .submit-btn:focus {
   outline: none;
@@ -116,6 +164,100 @@ input {
   margin-right: .5rem;
 }
 
+.btn {
+  background-color: var(--custom-navy);
+  width: 6rem;
+  height: 2rem;
+  display: flex;
+  align-items: center;
+  padding: 0.25rem;
+  justify-content: center;
+  border-radius: 0.25rem;
+}
+
+.btn a {
+  color: white;
+  text-decoration: none;
+  height: 100%;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: default;
+}
+
+.btn.go-back {
+  position: absolute;
+  bottom: 1rem;
+  left: 1rem;
+  width: auto;
+}
+
+.btn.go-back .icon-back_arrows {
+  margin-right: 0.5rem;
+}
+
+.btn.go-forward {
+  position: absolute;
+  bottom: 1rem;
+  right: 1rem;
+  width: auto;
+}
+
+.btn.go-forward .icon-forward_arrows {
+  margin-left: 0.5rem;
+}
+/*******************************************************************************/
+/*******************************************************************************/
+/*********************************Category Page*********************************/
+/*******************************************************************************/
+/*******************************************************************************/
+.table-container tr, .table-containertd {
+  border: 1px solid black;
+}
+
+.category-main {
+  padding: 0 1rem;
+}
+
+.add-category-form {
+  display: flex;
+  align-items: center;
+}
+
+.add-category-form input[name='category_name'] {
+  margin: .5rem;
+}
+
+.category-list-container {
+  padding: 0 1rem;
+}
+
+.table-container {
+  max-height: 29rem;
+  overflow-y: auto;
+  overflow-x: hidden;
+  width: 23rem;
+  border-radius: 0.5rem;
+}
+
+.table-container tbody {
+  box-shadow: inset 0 3px 3px rgba(0 0 0 / 50%), inset 0 -1px 3px rgba(0 0 0 / 50%);
+}
+
+.table-container td:first-of-type {
+  padding-left: .5rem;
+}
+
+.table-container td:nth-of-type(2) {
+  width: 3rem;
+}
+
+/*******************************************************************************/
+/*******************************************************************************/
+/*********************************Media Queries*********************************/
+/*******************************************************************************/
+/*******************************************************************************/
 @media screen and (max-width: 768px) {
   body {
     margin: 0;

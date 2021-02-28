@@ -1,48 +1,74 @@
 <?php
-require('database.php');
+  require('./model/database.php');
+  require('./model/category_db.php');
+  require('./model/item_db.php');
 
-$get_query = 'SELECT * FROM todoitems';
+  $action = filter_input(INPUT_POST, 'action');
+  // if($action == NULL) {
+  //   $action = filter_input(INPUT_GET, 'action');
+  //   if($action == NULL) {
+  //     $action = 'list_items';
+  //   }
+  // }
 
-$statement = $db->prepare($get_query);
-$statement->execute();
-$to_do_list_items = $statement->fetchAll();
-$statement->closeCursor();
+  switch($action) {
+    case('list_items') :
+      $category_id = filter_input(INPUT_GET, 'category_id', FILTER_VALIDATE_INT);
+      if($category_id == NULL || $category_id == FALSE) {
+        $category_id = 1;
+      }
+      $category_name = get_category_name($category_id);
+      $categories = get_all_categories();
+      $to_do_list_items = get_items_by_category($category_id);
+      include('index.php');
+      break;
+    case('delete_task'):
+      $item_num = filter_input(INPUT_POST, 'itemID', FILTER_VALIDATE_INT);
+      $category_id = filter_input(INPUT_POST, 'categoryID', FILTER_VALIDATE_INT);
+      if($category_id == NULL || $category_id == FALSE || $item_num == NULL || $item_num == FALSE) {
+        $error = "Missing task information or category information.";
+        include('./view/error.php');
+      }else {
+        delete_item($item_num);
+        header("Location: .");
+      }
+      break;
+    case('add_task'):
+      $category_id = filter_input(INPUT_POST, 'category', FILTER_VALIDATE_INT);
+      $title = filter_input(INPUT_POST, 'title');
+      $description = filter_input(INPUT_POST, 'description');
+      if($category_id == NULL || $category_id == FALSE || $title == NULL || $title == FALSE || $description == NULL || $description == FALSE) {
+        $error = "There is missing information. Please review your submission.";
+        include('./view/error.php');
+      }else {
+        add_item($category_id, $title, $description);
+        header("Location: .");
+      }
+      break;
+    default:
+      $to_do_list_items = get_all_items();
+      $categories = get_all_categories();
+      // include('index.php');
+      break;
+  }
+
+  if($categories == NULL || $categories == FALSE) {
+    $host  = $_SERVER['HTTP_HOST'];
+    $uri   = rtrim(dirname($_SERVER['PHP_SELF']), '/\\');
+    $extra = './view/category_list.php';
+    header("Location: http://$host$uri/$extra");
+  }
 ?>
 
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Johnson To-Do Task List</title>
-  <link rel="stylesheet" href="css/todolist.css" >
-  <link rel="stylesheet" href="css/style.css" >
-</head>
+<?php include('head.php'); ?>
 <body>
+  <?php echo $action ?>
   <div class="container">
-    <header class="list-header">
-      <h1>TO-DO TASK LIST</h1>
-    </header>
-    <main>
-      <section class="task-list-section">
-        <?php foreach ($to_do_list_items as $item) : ?>
-        <div class="to-do-row">
-          <div>
-            <p class="task-title"><?php echo $item['Title']; ?></p><!--List Item Title -->
-            <p class="task-description"><?php echo $item['Description']; ?></p><!--List Item Description -->
-          </div>
-          <div class="remove-btn-container">
-            <form action="delete-task.php" method="POST">
-              <input type="hidden" name="itemID" value="<?php echo $item['ItemNum'] ?>">
-              <button class="remove-btn" type="submit" ><span class="icon-bin"></span></button>  
-            </form>
-          </div>
-        </div>
-        <?php endforeach; ?>
-      </section>
-      <?php include('ToDoListForm.php') ?>
-    </main>
+    <?php include('./view/header.php'); ?>
+    <?php include('./view/task_list.php'); ?>
+    <?php include('./view/footer.php') ?>
   </div>
 </body>
 </html>

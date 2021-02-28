@@ -1,15 +1,10 @@
 <!DOCTYPE html>
 <html>
-
-<!-- the head section -->
-<head>
-    <title>Johnson To-Do List</title>
-    <link rel="stylesheet" type="text/css" href="main.css" />
-</head>
+<?php include('./head.php'); ?>
 
 <!-- the body section -->
 <body>
-    <header><h1>TO-DO LIST</h1></header>
+    <?php include('header.php'); ?>
 
     <main>
         <h1>Database Error</h1>
@@ -20,8 +15,6 @@
         <p>&nbsp;</p>
     </main>
 
-    <footer>
-        <p>&copy; <?php echo date("Y"); ?> Matt Johnson To-Do List</p>
-    </footer>
+    <?php include('footer.php') ?>
 </body>
 </html>
